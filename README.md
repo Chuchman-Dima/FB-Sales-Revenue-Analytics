@@ -100,18 +100,7 @@
 └── README.md
 ```
 
-## Як запустити
-
-```bash
-pip install pandas numpy matplotlib seaborn jupyter
-jupyter notebook notebook/fnb_sales_analysis.ipynb
-```
-
-Ноутбук сам шукає файли в `../data/`, `data/` або поруч із собою. Далі: **Run All**.
-
----
-
 ## Автор
 
-**Dmytro Chuchman**, студент Computer Mathematics (КНУ імені Тараса Шевченка), шукаю роль Junior/Intern Data Analyst.
+**Dmytro Chuchman**, студент Computer Mathematics (КНУ імені Тараса Шевченка).
 Email: dmytrochuchman2024@gmail.com
