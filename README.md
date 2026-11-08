@@ -95,7 +95,7 @@
 │   ├── Products.csv
 │   └── Transactions.csv
 ├── notebook/
-│   └── fnb_sales_analysis.ipynb
+│   └── notebook.ipynb
 ├── images/                  # графіки для README
 └── README.md
 ```
