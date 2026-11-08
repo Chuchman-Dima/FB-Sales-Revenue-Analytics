@@ -1,106 +1,110 @@
-# F&B Sales Analytics: аналіз продажів мережі кав'ярень
+# F&B Sales Analytics: Coffee Shop Sales Analysis
 
-Аналіз 53 820 чеків із касової системи (POS) трьох кав'ярень в Індонезії за січень–вересень 2025: де, коли і на чому бізнес заробляє, що сталося з продажами в квітні та які ідеї варто перевірити для зростання.
+An analysis of 53,820 POS transactions from three coffee shops in Indonesia between January and September 2025. The project explores where, when, and what drives revenue, investigates the April sales decline, and identifies potential opportunities for business growth.
 
-**Інструменти:** Python · pandas · numpy · matplotlib · seaborn · Jupyter Notebook
+**Tools:** Python · pandas · NumPy · Matplotlib · Seaborn · Jupyter Notebook
 
 ---
 
-## Ключові висновки
+## Key Findings
 
-| Тема | Що показують дані |
+| Area | Insights |
 |---|---|
-| Масштаб | 53 820 чеків, 61 973 проданих позицій, **≈1,32 млрд IDR** (2 січня – 30 вересня 2025). Середній оплачений чек ≈ 25,3 тис. IDR, медіана 23 тис. |
-| Заклади | `SHOP001` дає **49%** доходу (644 млн), `SHOP003` 31% (410 млн), `SHOP002` 20% (262 млн). Середній чек майже однаковий (25,1–25,3 тис. IDR), тож різниця в **кількості гостей**, а не в чеку |
-| Сезонність | Пік у червні (**183 млн IDR, +37,8%** до травня), провал у квітні (**110 млн, −27,7%** до березня), далі спад: липень −3,5%, серпень −17,4%, вересень −7,3% |
-| Квітень | Дохід на день просів у `SHOP003` на 60% (≈1,80 → 0,72 млн IDR), у `SHOP002` на 23%, у `SHOP001` не змінився. Усі заклади продавали **кожного дня квітня**, а середній чек лишився стабільним, отже впала кількість чеків, а не працювали менше |
-| Час | Найсильніші години **17:00–22:00** (≈7,1–7,5% доходу на годину), найслабші **7–8 ранку** (≈4,3–4,4%). День тижня майже не впливає |
-| Категорії | Coffee ≈36% і штук, і доходу. **Menu Gedhe**: 20,3% штук, але 26,1% доходу. **Snacks**: 9,4% штук, але лише 7,0% доходу. Add on ≈1,3% |
-| Продукти | Топ-10 продуктів дають **34,4%** доходу (з 68 продуктів). Лідери: Friendly Coffee, WHITE, Basic Latte |
-| Лояльність | 1 733 чеки (3,2%), безкоштовні позиції на **44,3 млн IDR** (3,3% вартості проданого). Найчастіше безкоштовними стають Menu Gedhe (3,9%), Other (3,7%), Coffee (3,3%); чай лише 0,7% |
-| Оплата | BCA: 79,5% чеків і 82,2% доходу; готівка 20,3% і 17,6%; GoFood лише 0,2% (102 чеки). Середній оплачений чек не залежить від способу оплати (25,3 проти 25,2 тис. IDR) |
-| Кошик | **84,9%** чеків містять одну позицію, 15,1% дві (у середньому 1,15). Кава є у 59% чеків із двома позиціями, найчастіша пара Coffee + Menu Gedhe (14,6%) |
+| **Business Overview** | 53,820 transactions, 61,973 items sold, and **~1.32 billion IDR** in revenue (January 2 – September 30, 2025). Average paid transaction: ~25.3K IDR; median: 23K IDR. |
+| **Store Performance** | `SHOP001` generates **49%** of total revenue (644M IDR), `SHOP003` 31% (410M IDR), and `SHOP002` 20% (262M IDR). Average transaction values are nearly identical (25.1–25.3K IDR), indicating that the revenue gap is driven primarily by **transaction volume**, not spending per transaction. |
+| **Monthly Trends** | Revenue peaked in June (**183M IDR, +37.8%** MoM), while April saw a significant decline (**110M IDR, −27.7%** MoM). Revenue continued to decrease afterward: July −3.5%, August −17.4%, and September −7.3%. |
+| **April Decline** | Daily revenue dropped by 60% at `SHOP003` (~1.80M → 0.72M IDR) and 23% at `SHOP002`, while `SHOP001` remained stable. All three stores recorded transactions every day in April, and average transaction values remained stable. This indicates that the decline was driven by **fewer transactions rather than reduced operating days or lower spending per transaction**. |
+| **Time Patterns** | The strongest hours are **17:00–22:00** (~7.1–7.5% of daily revenue per hour), while the weakest are **7:00–8:00 AM** (~4.3–4.4%). Differences across weekdays are relatively small. |
+| **Product Categories** | Coffee accounts for ~36% of both units sold and revenue. **Menu Gedhe** represents 20.3% of units sold but generates 26.1% of revenue. **Snacks** account for 9.4% of units but only 7.0% of revenue. Add-ons contribute ~1.3%. |
+| **Top Products** | The top 10 products generate **34.4%** of total revenue across 68 products. Leading products include Friendly Coffee, WHITE, and Basic Latte. |
+| **Loyalty Program** | 1,733 transactions (3.2%) involved free items worth **44.3M IDR** (3.3% of total item value). Free items are most common in Menu Gedhe (3.9%), Other (3.7%), and Coffee (3.3%) categories, while tea accounts for only 0.7%. |
+| **Payment Methods** | BCA accounts for 79.5% of transactions and 82.2% of revenue; cash represents 20.3% and 17.6%, respectively. GoFood accounts for only 0.2% (102 transactions). Average paid transaction values are nearly identical across payment methods (25.3K vs. 25.2K IDR). |
+| **Basket Analysis** | **84.9%** of transactions contain one item, while 15.1% contain two (1.15 items per transaction on average). Coffee appears in 59% of two-item transactions. The most common category combination is Coffee + Menu Gedhe (14.6%). |
 
 ---
 
-## Графіки
+## Visualizations
 
-### Дохід по місяцях: пік у червні, провал у квітні
-![Дохід по місяцях](images/01_monthly_revenue.png)
+### Monthly Revenue: June Peak and April Decline
+![Monthly Revenue](images/01_monthly_revenue.png)
 
-### Квітень по закладах: просіли `SHOP003` і `SHOP002`, `SHOP001` стабільний
-![Дохід по місяцях у розрізі закладів](images/02_april_by_outlet.png)
+### April Performance by Store: Declines at SHOP003 and SHOP002, SHOP001 Remains Stable
+![April Revenue by Store](images/02_april_by_outlet.png)
 
-### Коли купують: вечір сильний, ранок слабкий, дні тижня схожі
-![Теплова карта день тижня × година](images/03_heatmap_weekday_hour.png)
+### Purchase Patterns: Strong Evenings, Weak Mornings, Similar Weekday Trends
+![Weekday and Hour Heatmap](images/03_heatmap_weekday_hour.png)
 
-### Категорії: Menu Gedhe заробляє більше, ніж продається
-![Категорії](images/04_categories.png)
+### Product Categories: Menu Gedhe Generates a Higher Revenue Share Than Its Sales Volume
+![Revenue by Product Category](images/04_categories.png)
 
-### Топ-10 продуктів за доходом
-![Топ-10 продуктів](images/05_top_products.png)
+### Top 10 Products by Revenue
+![Top 10 Products](images/05_top_products.png)
 
-### Що купують разом
-![Пари категорій у чеках із двома позиціями](images/06_category_pairs.png)
+### What Customers Buy Together
+![Product Category Combinations](images/06_category_pairs.png)
 
-Усі графіки, таблиці та розрахунки є в ноутбуці.
-
----
-
-## Що зроблено
-
-1. **Перевірка даних:** пропуски, дублікати чеків, від'ємні й нульові суми, періоди.
-2. **Звірка сум:** дохід, порахований по окремих товарах, збігається з сумою чеків до однієї рупії (1 315 276 000 IDR).
-3. **Підготовка:** розбиття списку товарів у чеку на окремі позиції (`explode`), приєднання довідника меню.
-4. **Аналіз:** KPI, порівняння закладів, динаміка по місяцях (MoM), розбір квітневого провалу, теплова карта «день × година», категорії та продукти, програма лояльності, способи оплати, аналіз кошика.
-5. **Висновки й гіпотези** для бізнесу.
+All visualizations, detailed tables, and calculations are available in the Jupyter Notebook.
 
 ---
 
-## Ідеї для бізнесу (гіпотези, які варто перевірити)
+## Analysis Workflow
 
-1. **Збільшити частку чеків із двома позиціями.** Лише 15% чеків містять другу позицію. Перевірити можна комбо «кава + випічка».
-2. **Підсилити ранок (7–8 годин)**, найслабші години в усіх закладах. Варіант: сніданкова пропозиція.
-3. **З'ясувати причину квітня в `SHOP002` і `SHOP003`.** Заклади працювали, але чеків стало суттєво менше (ремонт поруч, свята, конкуренти, акції).
-4. **Переглянути програму лояльності для чаю й добавок:** використання майже нульове.
-5. **Для `SHOP002` і `SHOP003` працювати з потоком гостей**, бо середній чек уже такий самий, як у лідера.
-
----
-
-## Обмеження
-
-- У даних немає собівартості, тому аналізується **дохід, а не прибуток**.
-- Немає ідентифікатора клієнта, тому не можна порахувати повторні візити та утримання.
-- Лише 9 місяців: річну сезонність оцінити неможливо.
-- Причину квітневого провалу дані не пояснюють, вони лише показують, де і наскільки він стався.
-- Чеки за карткою лояльності мають нульову суму, тому середній чек рахується лише за оплаченими чеками.
+1. **Data Quality Checks:** Identified missing values, duplicate transactions, negative and zero amounts, and validated the reporting period.
+2. **Revenue Reconciliation:** Verified that revenue calculated from individual product items matched transaction totals within one rupiah (1,315,276,000 IDR).
+3. **Data Preparation:** Split product lists into individual transaction items using `explode` and joined the product catalog.
+4. **Exploratory Analysis:** Analyzed KPIs, store performance, monthly revenue trends (MoM), the April decline, weekday and hourly demand patterns, product categories, individual products, loyalty program usage, payment methods, and basket composition.
+5. **Business Insights:** Summarized findings and developed actionable business hypotheses.
 
 ---
 
-## Дані
+## Business Recommendations & Hypotheses
 
-| Файл | Опис |
+The following opportunities were identified based on the analysis. Each requires further validation before implementation.
+
+1. **Increase the share of multi-item transactions.** Only 15% of transactions contain a second item. Test product bundles such as coffee + pastry combinations to encourage additional purchases.
+2. **Strengthen morning sales (7:00–8:00 AM).** These are the weakest hours across all three stores. Consider testing breakfast deals or morning promotions.
+3. **Investigate the April decline at `SHOP002` and `SHOP003`.** Both stores remained operational, but transaction volumes dropped significantly. Potential explanations include nearby construction, holidays, competitors, or promotional changes.
+4. **Review loyalty program incentives for tea and add-ons.** Their redemption rates are particularly low, suggesting an opportunity to reassess the current reward structure.
+5. **Focus on customer traffic at `SHOP002` and `SHOP003`.** Since average transaction values are already comparable to the leading store, increasing transaction volume may offer greater growth potential.
+
+---
+
+## Limitations
+
+- **No cost data:** The analysis measures revenue, not profit.
+- **No customer identifiers:** Repeat purchases, customer retention, and customer-level behavior cannot be analyzed.
+- **Limited reporting period:** Only nine months of data are available, making annual seasonality analysis impossible.
+- **April decline remains unexplained:** The data identify where and to what extent the decline occurred but do not establish its underlying cause.
+- **Zero-value loyalty transactions:** Transactions paid entirely with loyalty rewards have zero recorded amounts, so average transaction value is calculated using paid transactions only.
+
+---
+
+## Dataset
+
+| File | Description |
 |---|---|
-| `Transactions.csv` | 53 820 чеків: заклад, дата, час, суми, список товарів, кількість позицій, спосіб оплати, ознака лояльності |
-| `Products.csv` | довідник меню: 96 позицій (68 унікальних назв), категорія, варіант, ціна |
+| `Transactions.csv` | 53,820 POS transactions containing store, date, time, amounts, product lists, item counts, payment methods, and loyalty indicators. |
+| `Products.csv` | Product catalog with 96 menu entries (68 unique product names), including category, variant, and price. |
 
-Валюта: індонезійська рупія (IDR).
+**Currency:** Indonesian Rupiah (IDR).
 
 ---
 
-## Структура репозиторію
+## Repository Structure
 
-```
+```text
 ├── data/
 │   ├── Products.csv
 │   └── Transactions.csv
 ├── notebook/
 │   └── notebook.ipynb
-├── images/                  # графіки для README
+├── images/                  # Visualizations used in README
 └── README.md
 ```
 
-## Автор
+## Author
 
-**Dmytro Chuchman**, студент Computer Mathematics (КНУ імені Тараса Шевченка).
+**Dmytro Chuchman**  
+Computer Mathematics student at Taras Shevchenko National University of Kyiv.
+
 Email: dmytrochuchman2024@gmail.com
